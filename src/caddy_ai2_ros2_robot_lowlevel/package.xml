@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>caddy_ai2_ros2_robot_lowlevel</name>
+  <version>0.1.0</version>
+  <description>
+    Low-level control of the Caddy AI2 on the LattePanda Alpha: steering, traction, SICK LMS291,
+    SBG IG-500N and (pending) PLC and automatic brake system.
+  </description>
+  <maintainer email="rafapenya96@gmail.com">Rafael Carbonell Lázaro</maintainer>
+  <license>CC-BY-4.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Robot description and shared parameters -->
+  <exec_depend>caddy_ai2_ros2_description</exec_depend>
+
+  <!-- Common utilities (SocketCAN, launch helpers) -->
+  <exec_depend>caddy_ai2_ros2_common</exec_depend>
+
+  <!-- Hardware drivers (real robot only — not needed in simulation) -->
+  <exec_depend>caddy_ai2_ros2_control_system_steering_driver</exec_depend>
+  <exec_depend>caddy_ai2_ros2_control_system_traction_driver</exec_depend>
+
+  <!-- Controllers -->
+  <exec_depend>ros2_control</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>bicycle_steering_controller</exec_depend>
+  <exec_depend>forward_command_controller</exec_depend>
+
+  <!-- Sensors -->
+  <exec_depend>caddy_ai2_ros2_sensors_sick_lms_291</exec_depend>
+  <exec_depend>caddy_ai2_ros2_control_sensors_sbg_ig_500n</exec_depend>
+
+  <!-- Control adapters and description publisher (shared with sim) -->
+  <exec_depend>caddy_ai2_ros2_bicycle_to_ackermann_steering_adapter</exec_depend>
+  <exec_depend>caddy_ai2_ros2_bicycle_to_ackermann_traction_adapter</exec_depend>
+  <exec_depend>caddy_ai2_ros2_robot_description_publisher</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

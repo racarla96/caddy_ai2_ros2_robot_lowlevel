@@ -1,0 +1,48 @@
+{% set ns = '/' + namespace + '/' if namespace else '/' %}
+
+{{ ns }}controller_manager:
+  ros__parameters:
+    update_rate: 100
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    bicycle_steering_controller:
+      type: bicycle_steering_controller/BicycleSteeringController
+    forward_position_command_controller:
+      type: forward_command_controller/ForwardCommandController
+    forward_velocity_command_controller:
+      type: forward_command_controller/ForwardCommandController
+
+# -----------------------------------------------------------------------
+# BicycleSteeringController — targets the hardware driver joints directly.
+# No Ackermann adapters: the physical Ackermann linkage handles the split.
+# -----------------------------------------------------------------------
+{{ ns }}bicycle_steering_controller:
+  ros__parameters:
+    wheelbase: {{ wheelbase }}
+    traction_wheel_radius: {{ wheel_radius }}
+    reference_timeout: 2.0
+    traction_joints_names:
+      - {{ prefix }}system_traction_joint
+    steering_joints_names:
+      - {{ prefix }}steering_joint
+    open_loop: false
+    velocity_rolling_window_size: 10
+    base_frame_id: {{ prefix }}base_footprint
+    odom_frame_id: {{ prefix }}odom
+    enable_odom_tf: true
+    twist_covariance_diagonal: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    pose_covariance_diagonal: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    position_feedback: false
+
+# Debug controllers (inactive by default)
+{{ ns }}forward_position_command_controller:
+  ros__parameters:
+    joints:
+      - {{ prefix }}steering_joint
+    interface_name: position
+
+{{ ns }}forward_velocity_command_controller:
+  ros__parameters:
+    joints:
+      - {{ prefix }}system_traction_joint
+    interface_name: velocity
